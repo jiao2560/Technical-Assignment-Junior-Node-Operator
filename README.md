@@ -1,5 +1,5 @@
 # Junior Node Operator – Technical Assignment   -- By Wenbo Jiao
-Thank you for reviewing this submission. If you need any further information, fell free to contact me at wbj0706@gmail.com at any time.
+Thank you for reviewing this submission. If you need any further information, feel free to contact me at wbj0706@gmail.com at any time.
 
 This repository contains my completed submission for the **Gateway.fm Junior Node Operator** technical assignment.
 
