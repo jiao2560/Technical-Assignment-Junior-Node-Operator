@@ -1,0 +1,13 @@
+modules:
+  geth:
+    scrape_uri: http://geth:6060/debug/vars
+    metrics:
+      - name: geth_heap_alloc
+        path: '{.memstats.HeapAlloc}'
+        type: gauge
+        help: "Heap memory allocated in bytes"
+      - name: geth_num_gc
+        path: '{.memstats.NumGC}'
+        type: counter
+        help: "Number of completed GC cycles"
+

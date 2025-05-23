@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'geth'
+    metrics_path: /probe
+    params:
+      module: [geth]
+    static_configs:
+      - targets: ['http://geth:6060/debug/vars']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: json-exporter:7979
+
+  - job_name: 'lighthouse'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['lighthouse:5054']
+
