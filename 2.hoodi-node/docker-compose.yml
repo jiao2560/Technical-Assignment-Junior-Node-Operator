@@ -1,0 +1,51 @@
+services:
+  geth:
+    container_name: geth
+    image: ethereum/client-go:stable
+    command: >
+      --sepolia
+      --syncmode=full
+      --http --http.addr=0.0.0.0 --http.port=8545 --http.api=eth,net,web3
+      --authrpc.addr=0.0.0.0 --authrpc.port=8551 --authrpc.vhosts=* --authrpc.jwtsecret=/jwt/jwt.hex
+      --ws --ws.addr=0.0.0.0 --ws.port=8546
+      --ipcdisable
+      --metrics --pprof --pprof.addr=0.0.0.0 --metrics.addr=0.0.0.0
+    volumes:
+      - ./jwt:/jwt
+      - ./geth-data:/root/.ethereum
+    ports:
+      - "8545:8545"
+      - "8551:8551"
+      - "30303:30303"
+      - "6060:6060"
+    networks:
+      - hoodi
+
+  lighthouse:
+    container_name: lighthouse
+    image: sigp/lighthouse:latest
+    command: >
+      lighthouse bn
+        --network sepolia
+        --execution-endpoint http://geth:8551
+        --jwt-secrets /jwt/jwt.hex
+        --checkpoint-sync-url https://sepolia.beaconstate.info
+        --http
+        --http-address 0.0.0.0
+        --metrics
+        --metrics-address 0.0.0.0
+    depends_on:
+      - geth
+    volumes:
+      - ./jwt:/jwt
+      - ./lighthouse-data:/root/.lighthouse
+    ports:
+      - "5052:5052"
+      - "5054:5054"
+    networks:
+      - hoodi
+
+networks:
+  hoodi:
+    name: 2hoodi-node_default
+    external: true
